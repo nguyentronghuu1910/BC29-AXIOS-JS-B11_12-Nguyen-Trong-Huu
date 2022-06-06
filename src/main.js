@@ -6,10 +6,13 @@ function getID(id) {
 
 function getListOurTeams() {
    // lấy danh sách GV từ sever
+   //pending
+   getID("loader").style.display = "block";
    var promise = service.getListOurTeamApi()
    promise
       .then(function (result) {
          renderListOurTeams(result.data);
+         getID("loader").style.display = "none";
       })
       .catch(function (error) {
          console.log(error);
