@@ -11,8 +11,8 @@ function getListOurTeams() {
    var promise = service.getListOurTeamApi()
    promise
       .then(function (result) {
-         renderListOurTeams(result.data);
          getID("loader").style.display = "none";
+         renderListOurTeams(result.data);
       })
       .catch(function (error) {
          console.log(error);
