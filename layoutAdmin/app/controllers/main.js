@@ -120,6 +120,7 @@ function editOurTeach(id) {
          getID("MatKhau").value = result.data.matKhau;
          getID("HoTen").value = result.data.hoTen;
          getID("Email").value = result.data.email;
+         getID("HinhAnh").value = result.data.hinhAnh;
          getID("loaiNgonNgu").value = result.data.ngonNgu;
          getID("loaiNguoiDung").value = result.data.loaiND;
          getID("MoTa").value = result.data.moTa;
