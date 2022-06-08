@@ -23,18 +23,18 @@ getListOurTeams();
 
 function renderListOurTeams(data) {
    var contentHTML = "";
-   data.forEach(function (ourTeam) {
+   data.forEach(function (ourTeach) {
       contentHTML += `
       <div class="team__item">
           <div class="team__item-content">
             <div class="team__item-img">
-              <img src="./assets/img/${ourTeam.hinhAnh}" />
+              <img src="./assets/img/${ourTeach.hinhAnh}" />
           </div>
           <div class="team__item-info">
-          <p class="team__item-country">${ourTeam.ngonNgu}</p>
-          <p class="team__item-name">${ourTeam.hoTen}</p>
+          <p class="team__item-country">${ourTeach.ngonNgu}</p>
+          <p class="team__item-name">${ourTeach.hoTen}</p>
           <p class="team__item-description">
-           ${ourTeam.moTa}
+           ${ourTeach.moTa}
           </p>
         </div>
         </div>
