@@ -1,4 +1,6 @@
 var services = new Services();
+var validation = new Validation();
+var dsnd = new DanhSachNguoiDung();
 
 function getID(id) {
    return document.getElementById(id);
@@ -8,7 +10,8 @@ function getListOurTeachs() {
    services
       .getListOurTeachApi()
       .then(function (result) {
-         renderListOurTeachs(result.data);
+         dsnd.arr = result.data
+         renderListOurTeachs(dsnd.arr);
       })
       .catch(function (error) {
          console.log(error);
@@ -70,7 +73,7 @@ getID("btnThemNguoiDung").onclick = function () {
  * Add ND
  */
 
-function addOurTeach() {
+function addOurTeach(isEdit) {
    var taiKhoan = getID("TaiKhoan").value;
    var matKhau = getID("MatKhau").value;
    var hoTen = getID("HoTen").value;
@@ -79,7 +82,97 @@ function addOurTeach() {
    var loaiNgonNgu = getID("loaiNgonNgu").value;
    var loaiNguoiDung = getID("loaiNguoiDung").value;
    var moTa = getID("MoTa").value;
+   // flag isValid 
+   var isValid = true;
 
+   // Check validation
+   // Check tài khoản
+   // isValid &= validation.kiemTraRong(
+   //    taiKhoan,
+   //    "tbTK",
+   //    "(*) Không được để trống."
+   // );
+   if (!isEdit) {
+      isValid &= validation.kiemTraRong(
+         taiKhoan,
+         "tbTK",
+         "(*) Không được để trống."
+      ) &&
+         validation.kiemTraTKTonTai(
+            taiKhoan,
+            "tbTK",
+            "(*) Tài khoản đã tồn tại",
+            dsnd.arr
+         )
+   }
+
+   // Check password
+   isValid &= validation.kiemTraRong(
+      matKhau,
+      "tbMK",
+      "(*) Không được để trống."
+   ) && validation.kiemTraPassword(
+      matKhau,
+      "tbMK",
+      "(*) Đúng format (có ít nhất 1 ký tự hoa, 1 ký tự đặc biệt, 1 ký tự số)"
+   ) && validation.kiemTraDoDaiKiTu(
+      matKhau,
+      "tbMK",
+      6,
+      8,
+      "(*) Độ dài 6-8"
+   )
+   // Check họ tên
+   isValid &= validation.kiemTraRong(
+      hoTen,
+      "tbHoTen",
+      "(*) Không được để trống."
+   ) && validation.kiemTraChuoiKiTu(
+      hoTen,
+      "tbHoTen",
+      "(*) Không chứa số và ký tự đặc biệt"
+   )
+   // Check email
+   isValid &= validation.kiemTraRong(
+      email,
+      "tbEmail",
+      "(*) Không được để trống."
+   ) && validation.kiemTraEmail(
+      email,
+      "tbEmail",
+      "Đúng format email"
+   )
+   // Check hình ảnh
+   isValid &= validation.kiemTraRong(
+      hinhAnh,
+      "tbHinhAnh",
+      "(*) Không được để trống."
+   )
+   // Check loại ngôn ngữ
+   isValid &= validation.kiemTraOption(
+      "loaiNgonNgu",
+      "tbNgonNgu",
+      "(*) Vui lòng chọn loại người dùng."
+   )
+   // Check loại người dùng
+   isValid &= validation.kiemTraOption(
+      "loaiNguoiDung",
+      "tbND",
+      "(*) Vui lòng chọn loại ngôn ngữ."
+   )
+   // Check mô tả
+   isValid &= validation.kiemTraRong(
+      moTa,
+      "tbMoTa",
+      "(*) Không được để trống."
+   ) && validation.kiemTraDoDaiKiTu(
+      moTa,
+      "tbMoTa",
+      5,
+      60,
+      "(*)Không vượt quá 60 ký tự"
+   )
+   if (!isValid) return;
    // đối tượng ourTeach
    var ourTeach = new OurTeach(
       "",
@@ -103,6 +196,7 @@ function addOurTeach() {
       .catch(function (error) {
          console.log(error);
       });
+
 }
 
 function editOurTeach(id) {
@@ -129,6 +223,9 @@ function editOurTeach(id) {
       .catch(function (error) {
          console.log(error);
       });
+
+   // disable input#tknv
+   getID("TaiKhoan").disabled = true;
 }
 
 /**
@@ -167,4 +264,11 @@ function updateOurTeach(id) {
       .catch(function (error) {
          console.log(error);
       });
+}
+getID("").onclick = function () {
+   var nguoiDung = addOurTeach(false);
+
+   dsnd.capNhat(nguoiDung);
+   renderListOurTeachs(dsnd.arr);
+
 }
