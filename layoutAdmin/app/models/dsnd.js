@@ -10,9 +10,10 @@ function DanhSachNguoiDung() {
       });
       return index;
    };
-   this.capNhat = function (nd) {
+
+   this.update = function (nd) {
       //tim vi tri nd muon cap nhat
-      var index = this.timViTrind(nd.taiKhoan);
+      var index = this.timViTriND(nd.taiKhoan);
       if (index !== -1) return this.arr[index] = nd;
    };
 }

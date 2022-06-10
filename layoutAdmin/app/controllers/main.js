@@ -49,7 +49,6 @@ function renderListOurTeachs(data) {
  * Xoa ND
  */
 function deleteOurTeach(id) {
-   console.log(id);
    services
       .deleteOurTeachApi(id)
       .then(function () {
@@ -87,11 +86,6 @@ function addOurTeach(isEdit) {
 
    // Check validation
    // Check tài khoản
-   // isValid &= validation.kiemTraRong(
-   //    taiKhoan,
-   //    "tbTK",
-   //    "(*) Không được để trống."
-   // );
    if (!isEdit) {
       isValid &= validation.kiemTraRong(
          taiKhoan,
@@ -185,17 +179,8 @@ function addOurTeach(isEdit) {
       loaiNguoiDung,
       moTa,
    );
-   services
-      .addOurTeachApi(ourTeach)
-      .then(function () {
-         // render table
-         getListOurTeachs();
-         // close modal
-         document.getElementsByClassName("close")[0].click();
-      })
-      .catch(function (error) {
-         console.log(error);
-      });
+   return ourTeach
+
 
 }
 
@@ -232,29 +217,10 @@ function editOurTeach(id) {
  * Update ND
  */
 
-function updateOurTeach(id) {
-   var taiKhoan = getID("TaiKhoan").value;
-   var matKhau = getID("MatKhau").value;
-   var hoTen = getID("HoTen").value;
-   var email = getID("Email").value;
-   var hinhAnh = getID("HinhAnh").value;
-   var loaiNgonNgu = getID("loaiNgonNgu").value;
-   var loaiNguoiDung = getID("loaiNguoiDung").value;
-   var moTa = getID("MoTa").value;
-
-   var ourTeach = new OurTeach(
-      id,
-      taiKhoan,
-      matKhau,
-      hoTen,
-      email,
-      hinhAnh,
-      loaiNgonNgu,
-      loaiNguoiDung,
-      moTa
-   );
+function addOurTeachAPI() {
+   var ourTeach = addOurTeach()
    services
-      .updateOurTeachApi(ourTeach)
+      .addOurTeachApi(ourTeach)
       .then(function () {
          // render table
          getListOurTeachs();
@@ -265,10 +231,44 @@ function updateOurTeach(id) {
          console.log(error);
       });
 }
-getID("").onclick = function () {
-   var nguoiDung = addOurTeach(false);
 
-   dsnd.capNhat(nguoiDung);
-   renderListOurTeachs(dsnd.arr);
+function updateOurTeach(id) {
+   // var taiKhoan = getID("TaiKhoan").value;
+   // var matKhau = getID("MatKhau").value;
+   // var hoTen = getID("HoTen").value;
+   // var email = getID("Email").value;
+   // var hinhAnh = getID("HinhAnh").value;
+   // var loaiNgonNgu = getID("loaiNgonNgu").value;
+   // var loaiNguoiDung = getID("loaiNguoiDung").value;
+   // var moTa = getID("MoTa").value;
+
+   var nguoiDung = addOurTeach(true);
+   nguoiDung.id = id
+
+   // dsnd.update(nguoiDung);
+   // renderListOurTeachs(dsnd.arr);
+
+   // var ourTeach = new OurTeach(
+   //    id,
+   //    taiKhoan,
+   //    matKhau,
+   //    hoTen,
+   //    email,
+   //    hinhAnh,
+   //    loaiNgonNgu,
+   //    loaiNguoiDung,
+   //    moTa
+   // );
+   services
+      .updateOurTeachApi(nguoiDung)
+      .then(function () {
+         // render table
+         getListOurTeachs();
+         // close modal
+         document.getElementsByClassName("close")[0].click();
+      })
+      .catch(function (error) {
+         console.log(error);
+      });
 
 }

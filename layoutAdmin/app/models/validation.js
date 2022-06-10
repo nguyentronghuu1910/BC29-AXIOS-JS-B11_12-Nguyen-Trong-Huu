@@ -75,7 +75,6 @@ function Validation() {
    };
    this.kiemTraTKTonTai = function (value, tbId, mess, arr) {
       var isStatus = true;
-      console.log(arr);
       arr.forEach(function (item) {
          if (item.taiKhoan === value) {
             // Tai khoan ton tai
