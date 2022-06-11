@@ -64,7 +64,7 @@ getID("btnThemNguoiDung").onclick = function () {
    // Sửa lại title modal
    document.getElementsByClassName("modal-title")[0].innerHTML = "Thêm Người Dùng";
    // Thêm nút "Add" vào footer modal
-   var footer = `<button class = "btn btn-success" onclick="addOurTeach()">Add</button>`;
+   var footer = `<button class = "btn btn-success" onclick="getOurTeachFromInputAPI()">Add</button>`;
    document.getElementsByClassName("modal-footer")[0].innerHTML = footer;
 };
 
@@ -72,7 +72,10 @@ getID("btnThemNguoiDung").onclick = function () {
  * Add ND
  */
 
-function addOurTeach(isEdit) {
+// Hôm trước em tách hàm rồi á
+// thì cái hàm này giờ nó chỉ đề lấy thông tin từ cái input thôi à.
+// cái chỗ btn add ourteach á nó phải gọi cái addOurTeachAPI á
+function getOurTeachFromInput(isEdit) {
    var taiKhoan = getID("TaiKhoan").value;
    var matKhau = getID("MatKhau").value;
    var hoTen = getID("HoTen").value;
@@ -86,18 +89,18 @@ function addOurTeach(isEdit) {
 
    // Check validation
    // Check tài khoản
+   isValid &= validation.kiemTraRong(
+      taiKhoan,
+      "tbTK",
+      "(*) Không được để trống."
+   )
    if (!isEdit) {
-      isValid &= validation.kiemTraRong(
+      isValid &= validation.kiemTraTKTonTai(
          taiKhoan,
          "tbTK",
-         "(*) Không được để trống."
-      ) &&
-         validation.kiemTraTKTonTai(
-            taiKhoan,
-            "tbTK",
-            "(*) Tài khoản đã tồn tại",
-            dsnd.arr
-         )
+         "(*) Tài khoản đã tồn tại",
+         dsnd.arr
+      )
    }
 
    // Check password
@@ -166,6 +169,7 @@ function addOurTeach(isEdit) {
       60,
       "(*)Không vượt quá 60 ký tự"
    )
+
    if (!isValid) return;
    // đối tượng ourTeach
    var ourTeach = new OurTeach(
@@ -180,7 +184,6 @@ function addOurTeach(isEdit) {
       moTa,
    );
    return ourTeach
-
 
 }
 
@@ -217,8 +220,8 @@ function editOurTeach(id) {
  * Update ND
  */
 
-function addOurTeachAPI() {
-   var ourTeach = addOurTeach()
+function getOurTeachFromInputAPI() {
+   var ourTeach = getOurTeachFromInput()
    services
       .addOurTeachApi(ourTeach)
       .then(function () {
@@ -242,7 +245,7 @@ function updateOurTeach(id) {
    // var loaiNguoiDung = getID("loaiNguoiDung").value;
    // var moTa = getID("MoTa").value;
 
-   var nguoiDung = addOurTeach(true);
+   var nguoiDung = getOurTeachFromInput(true);
    nguoiDung.id = id
 
    // dsnd.update(nguoiDung);
