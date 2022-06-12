@@ -103,6 +103,9 @@ function getOurTeachFromInput(isEdit) {
       )
    }
 
+
+
+
    // Check password
    isValid &= validation.kiemTraRong(
       matKhau,
@@ -172,6 +175,7 @@ function getOurTeachFromInput(isEdit) {
 
    if (!isValid) return;
    // đối tượng ourTeach
+
    var ourTeach = new OurTeach(
       "",
       taiKhoan,
@@ -181,7 +185,7 @@ function getOurTeachFromInput(isEdit) {
       hinhAnh,
       loaiNgonNgu,
       loaiNguoiDung,
-      moTa,
+      moTa
    );
    return ourTeach
 
@@ -222,6 +226,8 @@ function editOurTeach(id) {
 
 function getOurTeachFromInputAPI() {
    var ourTeach = getOurTeachFromInput()
+   if (!ourTeach) return; // nếu không có teacher trả về => không làm gì nữa hết
+
    services
       .addOurTeachApi(ourTeach)
       .then(function () {
